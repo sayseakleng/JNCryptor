@@ -37,7 +37,7 @@ console.log("Decrypt AES256v3Cipher:", plainText);
 
 ```
 
-Follow my [guide](https://github.com/sayseakleng/JNCryptor/tree/master/JNCryptor/src/main/resources/aes.html)
+Follow my [guide](https://github.com/sayseakleng/JNCryptor/blob/master/src/main/resources/aes.html)
 
 Iterations
 ----------
