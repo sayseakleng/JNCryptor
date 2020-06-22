@@ -1,0 +1,62 @@
+buildscript {
+	repositories {
+        jcenter()
+        maven {
+	      url "https://plugins.gradle.org/m2/"
+	    }
+    }
+    dependencies {
+		classpath "io.franzbecker:gradle-lombok:+"
+		classpath "com.github.jengelman.gradle.plugins:shadow:+"
+    }
+}
+
+plugins {
+    id "java-library"
+}
+apply plugin: "io.franzbecker.gradle-lombok"
+apply plugin: "com.github.johnrengelman.shadow"
+
+repositories {
+    jcenter()
+}
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext {
+}
+
+dependencies {
+	// security
+	api "org.bouncycastle:bcprov-jdk15on:latest.release"
+	api "org.cryptonode.jncryptor:jncryptor:latest.release"
+	
+	implementation "org.projectlombok:lombok:latest.release"
+    implementation "ch.qos.logback:logback-classic:latest.release"
+
+    // Use JUnit test framework
+    testImplementation "org.junit.jupiter:junit-jupiter-api:latest.release"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:latest.release"
+    
+    // local libs
+    api fileTree(dir: "libs", include: ["*.jar"])
+    
+	components {
+		all { ComponentMetadataDetails details ->
+			def version = details.id.version
+			if (version.toLowerCase().contains("beta") || version.toLowerCase().contains("alpha") || version.contains("-M")) {
+				details.status = "milestone" // default in Gradle
+			}
+		}
+   }
+}
+
+shadowJar {
+	dependencies {
+		exclude(dependency("org.projectlombok:"))
+    	exclude(dependency("ch.qos.logback:"))
+    }
+    
+}

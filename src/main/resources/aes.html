@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>RNCryptor On JavaScript</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js" integrity="sha256-6rXZCnFzbyZ685/fMsqoxxZz/QZwMnmwHg+SsNe+C/w=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="./AES256JNCryptor.js"></script>
+</head>
+
+<body>
+<b>RNCryptor On JavaScript</b>
+<table>
+	<tr>
+		<td>Key:</td>
+		<td><input id="inKey" value="<<ENCRYPTION KEY>>" type="text"/></td>
+	</tr>
+	<tr>
+		<td>Plain Text:</td>
+		<td><input id="inPlain" value="Welcome!! សួស្ដី!" type="text"/></td>
+	</tr>
+	<tr>
+		<td>Encrypt:</td>
+		<td><p id="outEncrypt"></p></td>
+	</tr>
+	<tr>
+		<td>Decrypt:</td>
+		<td><p id="outDecrypt"></p></td>
+	</tr>
+	<tr>
+		<td><input type="button" value="Encrypt" id="btnEncrypt"/></td>
+		<td><input type="button" value="Decrypt" id="btnDecrypt"/></td>
+	</tr>
+</table>
+
+
+<script type="text/javascript">
+
+// AES
+$(document).ready(function() {
+	const aes256JNCryptor = new AES256JNCryptor();
+	aes256JNCryptor.setPBKDFIterations(1000);
+	
+	$("#btnEncrypt").click(function(){
+		var password 	= $("#inKey").val();
+		var message 	= $("#inPlain").val();
+		
+		var ciphertext = aes256JNCryptor.encryptData(message, password);
+		console.log("Encrypt AES256v3Cipher:", ciphertext);
+		$("#outEncrypt").text(ciphertext);
+	});
+	
+	$("#btnDecrypt").click(function(){
+		var password 	= $("#inKey").val();
+		var ciphertext 	= $("#outEncrypt").text();
+		
+		var plainText = aes256JNCryptor.decryptData(ciphertext, password)
+		console.log("Decrypt AES256v3Cipher:", plainText);
+		$("#outDecrypt").text(plainText);
+	});
+});
+
+</script>
+	
+</body>
+</html>
